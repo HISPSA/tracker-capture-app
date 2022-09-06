@@ -1424,8 +1424,2322 @@ trackerCapture.controller('DataEntryController',
                             }
                         }
                         $scope.getDataEntryForm();
-                        $timeout(function(){
+                         $timeout(function(){
                             $scope.showLoadingEventSpinner = false;
+
+
+                          		
+			//03/08/2020 - edit here for adding totals - end here
+			
+            var currentEventDetails = $scope.currentEvent;
+			var cumulativeTotal = 0;				
+			var selectedEntityid =  $scope.selectedEntity.trackedEntityInstance;			
+			var selectedEntityUrl = '../api/trackedEntityInstances/'+selectedEntityid + '?paging=false&fields=enrollments[events]&program=JRuLW57woOB&programStatus=ACTIVE';
+						
+			var currentEventDate = new Date(event.eventDate);
+			var currentEvent = event.event;
+			//console.log("eventDate: " + event.eventDate);
+			$('#TableCaptureForm tr').each(function (i, row) {				
+							//console.log('row id: '+ row.id);
+							if (row.cells[3] != undefined && row.id == "row-OdcXvW9sRW7") {								
+								$.getJSON(selectedEntityUrl,
+									function (json) {					
+									var enrollmentsjson = json;
+									var cumulativeTotal = 0;
+									if (enrollmentsjson.enrollments != undefined) {										
+										if (enrollmentsjson.enrollments[0].events.length > 0) {											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												//console.log("eventDate: " + event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													//console.log( rowEventDate < currentEventDate);
+													if (rowEventDate < currentEventDate) {
+														//console.log("currentEvent: " + currentEvent);
+														//console.log("event.event: " + event.event);
+														if (currentEvent != event.event) {
+															//console.log("rowEventDate: " + rowEventDate);
+															//console.log("currentEventDate: " + currentEventDate);
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'OdcXvW9sRW7') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+
+																		
+
+
+
+
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+
+												}
+
+
+
+
+											})
+
+											if ($scope.currentEvent.OdcXvW9sRW7 != undefined && $scope.currentEvent.BupjOLROGnk == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.OdcXvW9sRW7;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.BupjOLROGnk = cumulativeTotal;													
+													var newvalueDE = "BupjOLROGnk";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.OdcXvW9sRW7 == undefined && $scope.currentEvent.BupjOLROGnk != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.BupjOLROGnk - cumulativeTotal;
+													if (newupdateValue >= 0) {
+														$scope.currentEvent.OdcXvW9sRW7 = newupdateValue;
+														var newvalueDE = "OdcXvW9sRW7";
+														var ev = {
+															event: currentEventDetails.event,
+															orgUnit: currentEventDetails.orgUnit,
+															program: currentEventDetails.program,
+															programStage: currentEventDetails.programStage,
+															status: currentEventDetails.status,
+															geometry: currentEventDetails.geometry,
+															assignedUser: currentEventDetails.assignedUser,
+															trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+															dataValues: [{
+																dataElement: newvalueDE,
+																value: newupdateValue,
+																providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+															}]
+														};
+
+														DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+														})
+													}
+													else {
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+												}
+											}
+
+
+										}
+									}
+									})
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+							}													
+							else if (row.cells[3] != undefined && row.id == "row-sheYRpw3hy5")
+							{
+									$.getJSON(selectedEntityUrl,
+									function (json) {	
+									var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {										
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+
+												if (event.programStage == 'mRDg7F9tAZH') {
+
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'sheYRpw3hy5') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);	
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+
+
+
+												}
+											})
+
+											if ($scope.currentEvent.sheYRpw3hy5 != undefined && $scope.currentEvent.hiqwZ04mgyv == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.sheYRpw3hy5;
+												////console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.hiqwZ04mgyv = cumulativeTotal;													
+													var newvalueDE = "hiqwZ04mgyv";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.sheYRpw3hy5 == undefined && $scope.currentEvent.hiqwZ04mgyv != undefined) 
+												{
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.hiqwZ04mgyv - cumulativeTotal;
+													if (newupdateValue >= 0) {
+														$scope.currentEvent.sheYRpw3hy5 = newupdateValue;
+														var newvalueDE = "sheYRpw3hy5";
+
+														var ev = {
+															event: currentEventDetails.event,
+															orgUnit: currentEventDetails.orgUnit,
+															program: currentEventDetails.program,
+															programStage: currentEventDetails.programStage,
+															status: currentEventDetails.status,
+															geometry: currentEventDetails.geometry,
+															assignedUser: currentEventDetails.assignedUser,
+															trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+															dataValues: [{
+																dataElement: newvalueDE,
+																value: newupdateValue,
+																providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+															}]
+														};
+
+														DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+														})
+													}
+													else {
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+												}
+												}
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+							}
+							else if (row.cells[3] != undefined && row.id == "row-N9YnWLhO5YT")
+							{
+									$.getJSON(selectedEntityUrl,
+									function (json) {	
+									var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+
+												var rowEventDate = new Date(event.eventDate);
+
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'N9YnWLhO5YT') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);	
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+
+
+
+												}
+											})
+
+											if ($scope.currentEvent.N9YnWLhO5YT != undefined && $scope.currentEvent.kvJqqfeRl1f == undefined) {
+												cumulativeTotal = cumulativeTotal + $scope.currentEvent.N9YnWLhO5YT;
+												//console.log("cumulativeTotal: " + cumulativeTotal);
+												$scope.currentEvent.kvJqqfeRl1f = cumulativeTotal;
+												var newvalueDE = "kvJqqfeRl1f";
+												var ev = {
+													event: currentEventDetails.event,
+													orgUnit: currentEventDetails.orgUnit,
+													program: currentEventDetails.program,
+													programStage: currentEventDetails.programStage,
+													status: currentEventDetails.status,
+													geometry: currentEventDetails.geometry,
+													assignedUser: currentEventDetails.assignedUser,
+													trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+													dataValues: [{
+														dataElement: newvalueDE,
+														value: cumulativeTotal,
+														providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+													}]
+												};
+
+												DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+												})
+											}
+											else if ($scope.currentEvent.N9YnWLhO5YT == undefined && $scope.currentEvent.kvJqqfeRl1f != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.kvJqqfeRl1f - cumulativeTotal;
+													if (newupdateValue >= 0) {
+														$scope.currentEvent.N9YnWLhO5YT = newupdateValue;
+														var newvalueDE = "N9YnWLhO5YT";
+														var ev = {
+															event: currentEventDetails.event,
+															orgUnit: currentEventDetails.orgUnit,
+															program: currentEventDetails.program,
+															programStage: currentEventDetails.programStage,
+															status: currentEventDetails.status,
+															geometry: currentEventDetails.geometry,
+															assignedUser: currentEventDetails.assignedUser,
+															trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+															dataValues: [{
+																dataElement: newvalueDE,
+																value: newupdateValue,
+																providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+															}]
+														};
+
+														DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+														})
+													}
+													else {
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+												}
+											}
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-VnHmmfDZRL8")
+							{
+								  var cumulativeTotal = 0.0;
+
+									$.getJSON(selectedEntityUrl,
+									function (json) {		
+									var cumulativeTotal = 0;			
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'VnHmmfDZRL8') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+																	}
+																	return false;
+																}
+															})
+
+														}
+													}
+												}
+											})
+
+
+											if ($scope.currentEvent.VnHmmfDZRL8 != undefined && $scope.currentEvent.RtnnypERQ6e == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.VnHmmfDZRL8;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.RtnnypERQ6e = cumulativeTotal;													
+													var newvalueDE = "RtnnypERQ6e";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.VnHmmfDZRL8 == undefined && $scope.currentEvent.RtnnypERQ6e != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.RtnnypERQ6e - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.VnHmmfDZRL8 = newupdateValue;
+													var newvalueDE = "VnHmmfDZRL8";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+												}
+											}
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-bsOhL5gMiA2")
+							{
+									$.getJSON(selectedEntityUrl,
+									function (json) {	
+									var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'bsOhL5gMiA2') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);		
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)			
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+												}
+											})
+
+											if ($scope.currentEvent.bsOhL5gMiA2 != undefined && $scope.currentEvent.OPqPDJfrEUN == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.bsOhL5gMiA2;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.OPqPDJfrEUN = cumulativeTotal;													
+													var newvalueDE = "OPqPDJfrEUN";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.bsOhL5gMiA2 == undefined && $scope.currentEvent.OPqPDJfrEUN != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.OPqPDJfrEUN - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.bsOhL5gMiA2 = newupdateValue;
+													var newvalueDE = "bsOhL5gMiA2";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-lOl69tQ4SsN")
+							{
+									$.getJSON(selectedEntityUrl,
+									function (json) {
+									var cumulativeTotal = 0;					
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'lOl69tQ4SsN') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);	
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)				
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+												}
+											})
+
+											if ($scope.currentEvent.lOl69tQ4SsN != undefined && $scope.currentEvent.BNT0ilAPFNl == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.lOl69tQ4SsN;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.BNT0ilAPFNl = cumulativeTotal;													
+													var newvalueDE = "BNT0ilAPFNl";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.lOl69tQ4SsN == undefined && $scope.currentEvent.BNT0ilAPFNl != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.BNT0ilAPFNl - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.lOl69tQ4SsN = newupdateValue;
+													var newvalueDE = "lOl69tQ4SsN";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-YWT49rK48Kv")
+							{
+									$.getJSON(selectedEntityUrl,
+									function (json) {
+									var cumulativeTotal = 0;					
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'YWT49rK48Kv') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																	}
+																	return false;
+																}
+															})
+
+														}
+													}
+												}
+											})
+
+											if ($scope.currentEvent.YWT49rK48Kv != undefined && $scope.currentEvent.uhU5B4ocDC1 == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.YWT49rK48Kv;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.uhU5B4ocDC1 = cumulativeTotal;													
+													var newvalueDE = "uhU5B4ocDC1";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.YWT49rK48Kv == undefined && $scope.currentEvent.uhU5B4ocDC1 != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.uhU5B4ocDC1 - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.YWT49rK48Kv = newupdateValue;
+													var newvalueDE = "YWT49rK48Kv";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-Avuy4qMx47D")
+							{
+								
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+									var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'Avuy4qMx47D') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+												}
+											})
+
+
+											if ($scope.currentEvent.Avuy4qMx47D != undefined && $scope.currentEvent.yYIhA11EREJ == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.Avuy4qMx47D;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.yYIhA11EREJ = cumulativeTotal;													
+													var newvalueDE = "yYIhA11EREJ";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.Avuy4qMx47D == undefined && $scope.currentEvent.yYIhA11EREJ != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.yYIhA11EREJ - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.Avuy4qMx47D = newupdateValue;
+													var newvalueDE = "Avuy4qMx47D";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-XE0l3snpzH8" )
+							{					
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+										var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'XE0l3snpzH8') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+												}
+											})
+
+											if ($scope.currentEvent.XE0l3snpzH8 != undefined && $scope.currentEvent.mcxOOfFJcZV == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.XE0l3snpzH8;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.mcxOOfFJcZV = cumulativeTotal;													
+													var newvalueDE = "mcxOOfFJcZV";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.XE0l3snpzH8 == undefined && $scope.currentEvent.mcxOOfFJcZV != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.mcxOOfFJcZV - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.XE0l3snpzH8 = newupdateValue;
+													var newvalueDE = "XE0l3snpzH8";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-kL42B2XHokE")
+							{						
+
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+									var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+													$.each(event.dataValues, function (s, dataValue) {
+														var dataElement = dataValue.dataElement;
+														if (dataElement == 'kL42B2XHokE') {
+															if (dataValue.value != undefined) {
+																cumulativeTotal = 1.0*cumulativeTotal + (dataValue.value)*1.0;
+																//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+															}
+															return false;
+														}
+													})
+
+												}
+											}
+												}
+											})
+
+											if ($scope.currentEvent.kL42B2XHokE != undefined && $scope.currentEvent.TBgmaE3JciI == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.kL42B2XHokE;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.TBgmaE3JciI = cumulativeTotal;													
+													var newvalueDE = "TBgmaE3JciI";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+
+											else if ($scope.currentEvent.kL42B2XHokE == undefined && $scope.currentEvent.TBgmaE3JciI != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.TBgmaE3JciI - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.kL42B2XHokE = newupdateValue;
+													var newvalueDE = "kL42B2XHokE";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-xp2cVKbT7z8")
+							{
+							
+
+								$.getJSON(selectedEntityUrl,
+									function (json) {		
+										var cumulativeTotal = 0;			
+									var enrollmentsjson = json;
+										if (enrollmentsjson.enrollments != undefined) {
+
+											if (enrollmentsjson.enrollments[0].events.length > 0) {
+
+												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+													var rowEventDate = new Date(event.eventDate);
+													if (event.programStage == 'mRDg7F9tAZH') {
+														if (rowEventDate < currentEventDate) {
+															if (currentEvent != event.event) {
+																$.each(event.dataValues, function (s, dataValue) {
+																	var dataElement = dataValue.dataElement;
+																	if (dataElement == 'xp2cVKbT7z8') {
+																		if (dataValue.value != undefined) {
+																			cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																			//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																			row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																		}
+																		return false;
+																	}
+																})
+															}
+														}
+													}
+												})
+
+											if ($scope.currentEvent.xp2cVKbT7z8 != undefined && $scope.currentEvent.a1ov5sK29nL == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.xp2cVKbT7z8;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.a1ov5sK29nL = cumulativeTotal;													
+													var newvalueDE = "a1ov5sK29nL";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.xp2cVKbT7z8 == undefined && $scope.currentEvent.a1ov5sK29nL != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.a1ov5sK29nL - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.xp2cVKbT7z8 = newupdateValue;
+													var newvalueDE = "xp2cVKbT7z8";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+											}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-A3h8GTMv3CK")
+							{
+								$.getJSON(selectedEntityUrl,
+									function (json) {		
+										var cumulativeTotal = 0;			
+									var enrollmentsjson = json;
+										if (enrollmentsjson.enrollments != undefined) {
+
+											if (enrollmentsjson.enrollments[0].events.length > 0) {
+												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+													var rowEventDate = new Date(event.eventDate);
+													if (event.programStage == 'mRDg7F9tAZH') {
+														if (rowEventDate < currentEventDate) {
+															if (currentEvent != event.event) {
+																$.each(event.dataValues, function (s, dataValue) {
+																	var dataElement = dataValue.dataElement;
+																	if (dataElement == 'A3h8GTMv3CK') {
+																		if (dataValue.value != undefined) {
+																			cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																			//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);	
+																			row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)				
+																		}
+																		return false;
+																	}
+																})
+
+															}
+														}
+													}
+												})
+
+											if ($scope.currentEvent.A3h8GTMv3CK != undefined && $scope.currentEvent.rBeV3HB0EFq == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.A3h8GTMv3CK;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.rBeV3HB0EFq = cumulativeTotal;													
+													var newvalueDE = "rBeV3HB0EFq";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.A3h8GTMv3CK == undefined && $scope.currentEvent.rBeV3HB0EFq != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.rBeV3HB0EFq - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.A3h8GTMv3CK = newupdateValue;
+													var newvalueDE = "A3h8GTMv3CK";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+											}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+								
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-jfJfoWAp5xb")
+							{
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+										var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+													$.each(event.dataValues, function (s, dataValue) {
+														var dataElement = dataValue.dataElement;
+														if (dataElement == 'jfJfoWAp5xb') {
+															if (dataValue.value != undefined) {
+																cumulativeTotal = 1.0*cumulativeTotal + (dataValue.value)*1.0;
+																//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+															}
+															return false;
+														}
+													})
+
+												}
+											}
+												}
+											})
+
+											if ($scope.currentEvent.jfJfoWAp5xb != undefined && $scope.currentEvent.N7sbBOolKo3 == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.jfJfoWAp5xb;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.N7sbBOolKo3 = cumulativeTotal;													
+													var newvalueDE = "N7sbBOolKo3";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.jfJfoWAp5xb == undefined && $scope.currentEvent.N7sbBOolKo3 != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.N7sbBOolKo3 - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.jfJfoWAp5xb = newupdateValue;
+													var newvalueDE = "jfJfoWAp5xb";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-Pg1qZvjwNLd")
+							{
+								$.getJSON(selectedEntityUrl,
+									function (json) {
+										var cumulativeTotal = 0;
+										var enrollmentsjson = json;
+										if (enrollmentsjson.enrollments != undefined) {
+
+											if (enrollmentsjson.enrollments[0].events.length > 0) {
+
+												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+													var rowEventDate = new Date(event.eventDate);
+													if (event.programStage == 'mRDg7F9tAZH') {
+														if (rowEventDate < currentEventDate) {
+															if (currentEvent != event.event) {
+																$.each(event.dataValues, function (s, dataValue) {
+																	var dataElement = dataValue.dataElement;
+																	if (dataElement == 'Pg1qZvjwNLd') {
+																		if (dataValue.value != undefined) {
+																			cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																			//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																			row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																		}
+																		return false;
+																	}
+																})
+															}
+														}
+
+													}
+												})
+
+											if ($scope.currentEvent.Pg1qZvjwNLd != undefined && $scope.currentEvent.nTtZL79a1SI == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.Pg1qZvjwNLd;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.nTtZL79a1SI = cumulativeTotal;													
+													var newvalueDE = "nTtZL79a1SI";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.Pg1qZvjwNLd == undefined && $scope.currentEvent.nTtZL79a1SI != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.nTtZL79a1SI - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.Pg1qZvjwNLd = newupdateValue;
+													var newvalueDE = "Pg1qZvjwNLd";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+
+												}
+											}
+
+
+
+
+
+											}
+										}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-Vg7NPVpmPvi")
+							{
+								
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+										var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+													$.each(event.dataValues, function (s, dataValue) {
+														var dataElement = dataValue.dataElement;
+														if (dataElement == 'Vg7NPVpmPvi') {
+															if (dataValue.value != undefined) {
+																cumulativeTotal = 1.0*cumulativeTotal + (dataValue.value)*1.0;
+																//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+															}
+															return false;
+														}
+													})
+
+												}
+											}
+												}
+											})
+
+											if ($scope.currentEvent.Vg7NPVpmPvi != undefined && $scope.currentEvent.PDXITHc6Vyg == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.Vg7NPVpmPvi;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.PDXITHc6Vyg = cumulativeTotal;													
+													var newvalueDE = "PDXITHc6Vyg";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.Vg7NPVpmPvi == undefined && $scope.currentEvent.PDXITHc6Vyg != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.PDXITHc6Vyg - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.Vg7NPVpmPvi = newupdateValue;
+													var newvalueDE = "Vg7NPVpmPvi";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-TlyT82eTiFU")
+							{					
+								$.getJSON(selectedEntityUrl,
+									function (json) {	
+										var cumulativeTotal = 0;				
+									var enrollmentsjson = json;
+									if (enrollmentsjson.enrollments != undefined) {
+												
+										if (enrollmentsjson.enrollments[0].events.length > 0) {
+											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													if (rowEventDate < currentEventDate) {
+														if (currentEvent != event.event) {
+													$.each(event.dataValues, function (s, dataValue) {
+														var dataElement = dataValue.dataElement;
+														if (dataElement == 'TlyT82eTiFU') {
+															if (dataValue.value != undefined) {
+																cumulativeTotal = 1.0*cumulativeTotal + (dataValue.value)*1.0;
+																//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+															}
+															return false;
+														}
+													})
+
+												}
+											}
+												}
+											})
+
+											if ($scope.currentEvent.TlyT82eTiFU != undefined && $scope.currentEvent.mNjfJCZsWeo == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.TlyT82eTiFU;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.mNjfJCZsWeo = cumulativeTotal;													
+													var newvalueDE = "mNjfJCZsWeo";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.TlyT82eTiFU == undefined && $scope.currentEvent.mNjfJCZsWeo != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.mNjfJCZsWeo - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.TlyT82eTiFU = newupdateValue;
+													var newvalueDE = "TlyT82eTiFU";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+
+										}
+									}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+
+
+							}
+							else if (row.cells[3] != undefined && row.id == "row-SnGNuVm0fbD")
+							{
+								$.getJSON(selectedEntityUrl,
+									function (json) {
+										var cumulativeTotal = 0;
+										var enrollmentsjson = json;
+										if (enrollmentsjson.enrollments != undefined) {
+
+											if (enrollmentsjson.enrollments[0].events.length > 0) {
+												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+													var rowEventDate = new Date(event.eventDate);
+													if (event.programStage == 'mRDg7F9tAZH') {
+														if (rowEventDate < currentEventDate) {
+															if (currentEvent != event.event) {
+																$.each(event.dataValues, function (s, dataValue) {
+																	var dataElement = dataValue.dataElement;
+																	if (dataElement == 'SnGNuVm0fbD') {
+																		if (dataValue.value != undefined) {
+																			cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																			//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																			row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)					
+																		}
+																		return false;
+																	}
+																})
+															}
+														}
+													}
+												})
+
+
+											if ($scope.currentEvent.SnGNuVm0fbD != undefined && $scope.currentEvent.xR90dTvK9UO == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.SnGNuVm0fbD;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.xR90dTvK9UO = cumulativeTotal;													
+													var newvalueDE = "xR90dTvK9UO";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.SnGNuVm0fbD == undefined && $scope.currentEvent.xR90dTvK9UO != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.xR90dTvK9UO - cumulativeTotal;
+													if (newupdateValue >= 0)
+													{
+													$scope.currentEvent.SnGNuVm0fbD = newupdateValue;
+													var newvalueDE = "SnGNuVm0fbD";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: newupdateValue,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+													})
+												}
+												else 
+													{
+														$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+														$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+														$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+
+
+
+
+												}
+											}
+
+
+
+
+
+											}
+										}
+									})
+
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+							}
+							
+							//New DE - 05/07/2021
+							else if (row.cells[3] != undefined && row.id == "row-UTdQahMcNQj") {								
+								$.getJSON(selectedEntityUrl,
+									function (json) {					
+									var enrollmentsjson = json;
+									var cumulativeTotal = 0;
+									if (enrollmentsjson.enrollments != undefined) {										
+										if (enrollmentsjson.enrollments[0].events.length > 0) {											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												//console.log("eventDate: " + event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													//console.log( rowEventDate < currentEventDate);
+													if (rowEventDate < currentEventDate) {
+														//console.log("currentEvent: " + currentEvent);
+														//console.log("event.event: " + event.event);
+														if (currentEvent != event.event) {
+															//console.log("rowEventDate: " + rowEventDate);
+															//console.log("currentEventDate: " + currentEventDate);
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'UTdQahMcNQj') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+
+																		
+
+
+
+
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+
+												}
+
+
+
+
+											})
+
+											if ($scope.currentEvent.UTdQahMcNQj != undefined && $scope.currentEvent.BNTe3GMCSKF == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.UTdQahMcNQj;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.BNTe3GMCSKF = cumulativeTotal;													
+													var newvalueDE = "BNTe3GMCSKF";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.UTdQahMcNQj == undefined && $scope.currentEvent.BNTe3GMCSKF != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.BNTe3GMCSKF - cumulativeTotal;
+													if (newupdateValue >= 0) {
+														$scope.currentEvent.UTdQahMcNQj = newupdateValue;
+														var newvalueDE = "UTdQahMcNQj";
+														var ev = {
+															event: currentEventDetails.event,
+															orgUnit: currentEventDetails.orgUnit,
+															program: currentEventDetails.program,
+															programStage: currentEventDetails.programStage,
+															status: currentEventDetails.status,
+															geometry: currentEventDetails.geometry,
+															assignedUser: currentEventDetails.assignedUser,
+															trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+															dataValues: [{
+																dataElement: newvalueDE,
+																value: newupdateValue,
+																providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+															}]
+														};
+
+														DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+														})
+													}
+													else {
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+												}
+											}
+
+
+										}
+									}
+									})
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+							}
+							else if (row.cells[3] != undefined && row.id == "row-JoFnbRQT66J") {								
+								$.getJSON(selectedEntityUrl,
+									function (json) {					
+									var enrollmentsjson = json;
+									var cumulativeTotal = 0;
+									if (enrollmentsjson.enrollments != undefined) {										
+										if (enrollmentsjson.enrollments[0].events.length > 0) {											
+											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+												var rowEventDate = new Date(event.eventDate);
+												//console.log("eventDate: " + event.eventDate);
+												if (event.programStage == 'mRDg7F9tAZH') {
+													//console.log( rowEventDate < currentEventDate);
+													if (rowEventDate < currentEventDate) {
+														//console.log("currentEvent: " + currentEvent);
+														//console.log("event.event: " + event.event);
+														if (currentEvent != event.event) {
+															//console.log("rowEventDate: " + rowEventDate);
+															//console.log("currentEventDate: " + currentEventDate);
+															$.each(event.dataValues, function (s, dataValue) {
+																var dataElement = dataValue.dataElement;
+																if (dataElement == 'JoFnbRQT66J') {
+																	if (dataValue.value != undefined) {
+																		cumulativeTotal = 1.0 * cumulativeTotal + (dataValue.value) * 1.0;
+																		//console.log('event: ' + event.event +'  dataValue: ' + dataValue.value);
+																		row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';
+
+																		
+
+
+
+
+																	}
+																	return false;
+																}
+															})
+														}
+													}
+
+												}
+
+
+
+
+											})
+
+											if ($scope.currentEvent.JoFnbRQT66J != undefined && $scope.currentEvent.aRgVJNx0zUo == undefined) 
+											{
+												cumulativeTotal =  cumulativeTotal + $scope.currentEvent.JoFnbRQT66J;
+												//console.log("cumulativeTotal: "+ cumulativeTotal );
+												$scope.currentEvent.aRgVJNx0zUo = cumulativeTotal;													
+													var newvalueDE = "aRgVJNx0zUo";
+													var ev = {
+														event: currentEventDetails.event,
+														orgUnit: currentEventDetails.orgUnit,
+														program: currentEventDetails.program,
+														programStage: currentEventDetails.programStage,
+														status: currentEventDetails.status,
+														geometry: currentEventDetails.geometry,
+														assignedUser: currentEventDetails.assignedUser,
+														trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+														dataValues: [{
+															dataElement: newvalueDE,
+															value: cumulativeTotal,
+															providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+														}]
+													};
+
+													DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+
+													})							
+											}
+											else if ($scope.currentEvent.JoFnbRQT66J == undefined && $scope.currentEvent.aRgVJNx0zUo != undefined) {
+												if (cumulativeTotal >= 0) {
+													var newupdateValue = $scope.currentEvent.aRgVJNx0zUo - cumulativeTotal;
+													if (newupdateValue >= 0) {
+														$scope.currentEvent.JoFnbRQT66J = newupdateValue;
+														var newvalueDE = "JoFnbRQT66J";
+														var ev = {
+															event: currentEventDetails.event,
+															orgUnit: currentEventDetails.orgUnit,
+															program: currentEventDetails.program,
+															programStage: currentEventDetails.programStage,
+															status: currentEventDetails.status,
+															geometry: currentEventDetails.geometry,
+															assignedUser: currentEventDetails.assignedUser,
+															trackedEntityInstance: currentEventDetails.trackedEntityInstance,
+															dataValues: [{
+																dataElement: newvalueDE,
+																value: newupdateValue,
+																providedElsewhere: currentEventDetails.providedElsewhere[newvalueDE] ? true : false
+															}]
+														};
+
+														DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+														})
+													}
+													else {
+														alert("ERROR: Cumulative total cannot be less than previous update cumulative total.");
+													}
+												}
+											}
+
+
+										}
+									}
+									})
+								/*
+								//row.cells[3].innerHTML = '<p style="margin-bottom:.0001pt; padding:0cm 5.4pt 0cm 5.4pt">' + cumulativeTotal + '</p>';	//console.log(row.cells[3].innerHTML)
+								var el = angular.element(row);
+								var scope = el.scope();
+								var $injector = el.injector();
+								$injector.invoke(function ($compile) {
+									$compile(el)(scope)
+								})
+								*/
+								$scope.currentEventOriginal = angular.copy($scope.currentEvent);
+								$scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
+								$rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+							}
+			})		
+				
+			//03/08/2020 - edit here for adding totals - end here
+			
+
+
+
+
+
+
+
+
+
+
                         });
                     });
                 });
