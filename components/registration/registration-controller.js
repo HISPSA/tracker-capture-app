@@ -1483,6 +1483,7 @@ trackerCapture.controller('RegistrationController',
     var showTetRegistrationButtons = function(){
         return $scope.trackedEntityTypes.selected && $scope.attributes && $scope.attributes.length > 3;
     }
+<<<<<<< HEAD
 
     $scope.updateEnrollmentDate = function(){
         if(!DateUtils.isValid($scope.enrollmentDateState.date) || !$scope.selectedProgram.selectEnrollmentDatesInFuture && DateUtils.isAfterToday($scope.enrollmentDateState.date)){
@@ -1502,4 +1503,6 @@ trackerCapture.controller('RegistrationController',
             $scope.selectedEnrollment.incidentDate = $scope.incidentDateState.date;
         }
     }
+=======
+>>>>>>> 706bb005302f5c2673324642aed2b87dfb98c92b
 });
