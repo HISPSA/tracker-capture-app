@@ -222,14 +222,10 @@ trackerCapture.controller('SearchController',function(
             if($scope.searchingForRelatedTei) {
                 $rootScope.$broadcast('assignRelationshipTei', tei);
             } else {
-                AccessUtils.withinUserHierarchy(programOwners[0].ownerOrgUnit).then(function(response) {
-                    $location.path('/dashboard').search({tei: tei.id,
-                        program: $scope.base.selectedProgramForSearch ? $scope.base.selectedProgramForSearch.id: null,
-                        ou: response ? programOwners[0].ownerOrgUnit : $scope.selectedOrgUnit.id,
-                        fromAudit: fromAudit});
-                }).catch(function(error) {
-                    console.log("error opening TEI from search modal: ", error);
-                });
+                $location.path('/dashboard').search({tei: tei.id,
+                    program: $scope.base.selectedProgramForSearch ? $scope.base.selectedProgramForSearch.id: null,
+                    ou: $scope.selectedOrgUnit.id, 
+                    fromAudit: fromAudit});
             }
         }
 
@@ -299,6 +295,7 @@ trackerCapture.controller('SearchController',function(
 
             return $modal.open({
                 templateUrl: 'components/home/search/result-modal.html',
+                windowClass: 'modal-full-window',
                 controller: function($scope,$modalInstance, TEIGridService,OrgUnitFactory, orgUnit, res, refetchDataFn, internalService, canOpenRegistration, TEIService, NotificationService)
                 {
                     $scope.gridData = null;
