@@ -304,8 +304,10 @@ trackerCapture.controller('EventCreationController',
 					notes: [],
 					//origin dataValues assigned - replaced 25/09/2020
 					//dataValues: [],
-					//25/09/2020 - default event last update date 
-					dataValues: [{"dataElement": eventlastupdatedDateUid, "value": reportDate}],	
+					//25/09/2020 - default event last update date 	
+
+					//19/04/2023 - no needed for other stage. generates unneccessary conflicts. 
+					//dataValues: [{"dataElement": eventlastupdatedDateUid, "value": reportDate}],	
 					status: 'ACTIVE'
 				};
 			}
