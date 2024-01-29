@@ -295,6 +295,7 @@ trackerCapture.controller('EventCreationController',
 			}
 			else 
 			{
+						
 				newEvent = {
 					trackedEntityInstance: dummyEvent.trackedEntityInstance,
 					program: dummyEvent.program,
@@ -305,9 +306,11 @@ trackerCapture.controller('EventCreationController',
 					//origin dataValues assigned - replaced 25/09/2020
 					//dataValues: [],
 					//25/09/2020 - default event last update date 
-					dataValues: [{"dataElement": eventlastupdatedDateUid, "value": reportDate}],	
+					//dataValues: [{"dataElement": eventlastupdatedDateUid, "value": reportDate}],	
 					status: 'ACTIVE'
 				};
+
+				
 			}
         
         if ($scope.model.selectedStage.periodType) {
