@@ -33,7 +33,8 @@ trackerCapture.controller('EventCreationController',
                 ModalService,
                 CurrentSelection,
                 TEIService,
-                TCOrgUnitService) {
+                TCOrgUnitService,
+                SessionStorageService) {
     $scope.selectedOrgUnit = orgUnit;
     $scope.selectedEnrollment = enrollment;      
     $scope.stages = stages;
@@ -220,6 +221,9 @@ trackerCapture.controller('EventCreationController',
         $scope.orgUnitError =  false;
         
         var newEvents = {events: []};
+
+
+
         var newEvent = {
             trackedEntityInstance: dummyEvent.trackedEntityInstance,
             program: dummyEvent.program,
@@ -230,6 +234,21 @@ trackerCapture.controller('EventCreationController',
             dataValues: [],
             status: 'ACTIVE'
         };
+  
+        //Auto-insert user when events are captured - 09/04/2024
+		angular.forEach($scope.selectedProgram.programStages, function(pstage){              
+			angular.forEach(pstage.programStageDataElements, function(pstageDE){
+			if (pstageDE.dataElement.name.indexOf("Captured by") != -1) 
+			{
+                var userProfile = SessionStorageService.get('USER_PROFILE');
+                var storedBy = userProfile && userProfile.userCredentials && userProfile.userCredentials.username ? userProfile.userCredentials.username : '';
+				var captbyDV = {"dataElement": pstageDE.id, "value": storedBy};
+				newEvent.dataValues.push(captbyDV);
+			}				
+			});			
+		});
+
+
         
         if ($scope.model.selectedStage.periodType) {
             if( $scope.isNewEvent ){
