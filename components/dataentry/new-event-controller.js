@@ -238,11 +238,12 @@ trackerCapture.controller('EventCreationController',
         //Auto-insert user when events are captured - 09/04/2024
 		angular.forEach($scope.selectedProgram.programStages, function(pstage){              
 			angular.forEach(pstage.programStageDataElements, function(pstageDE){
-			if (pstageDE.dataElement.name.indexOf("Captured by") != -1) 
+            var DEname = pstageDE.dataElement.name.toLowerCase();
+			if (DEname.indexOf("captured by") != -1) 
 			{
                 var userProfile = SessionStorageService.get('USER_PROFILE');
                 var storedBy = userProfile && userProfile.userCredentials && userProfile.userCredentials.username ? userProfile.userCredentials.username : '';
-				var captbyDV = {"dataElement": pstageDE.id, "value": storedBy};
+				var captbyDV = {"dataElement": pstageDE.dataElement.id, "value": storedBy};
 				newEvent.dataValues.push(captbyDV);
 			}				
 			});			
