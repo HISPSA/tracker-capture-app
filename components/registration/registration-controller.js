@@ -551,6 +551,17 @@ trackerCapture.controller('RegistrationController',
         angular.forEach($scope.apiFormattedTei.attributes, function (attribute) {
             if(attribute.value !== '' && attribute.value != null ) {
                 tempAttributes.push(attribute);
+                //auto-insert captured-by - 09/04/2024
+                angular.forEach($scope.attributes, function (attr) {
+                    var attrName = attr.displayName.toLowerCase();
+                    if (attrName.indexOf("captured by") != -1)
+                {
+                    var userProfile = SessionStorageService.get('USER_PROFILE');
+                    var storedBy = userProfile && userProfile.userCredentials && userProfile.userCredentials.username ? userProfile.userCredentials.username : '';
+                    var captbyAtt = {"attribute": attr.id, "value": storedBy};
+                    tempAttributes.push(captbyAtt);
+                }
+                });               
             }
         });
 
