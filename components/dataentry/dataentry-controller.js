@@ -1490,8 +1490,17 @@ trackerCapture.controller('DataEntryController',
 			var selectedEntityid =  $scope.selectedEntity.trackedEntityInstance;			
 			var selectedEntityUrl = '../api/trackedEntityInstances/'+selectedEntityid + '?paging=false&fields=enrollments[events]&program=JRuLW57woOB&programStatus=ACTIVE';
 						
-			var currentEventDate = new Date(event.eventDate);
+			
+            
+            
+            var currentEventDate = new Date(event.eventDate);
             currentEventDate = new Date(event.eventDate);
+             const tzOffset = currentEventDate.getTimezoneOffset() * 60 * 1000;
+
+             currentEventDate = new Date(currentEventDate- tzOffset);
+           
+            var currentEventDate = new Date(event.eventDate);
+ 
 
 			var currentEvent = event.event;
 			//console.log("eventDate: " + event.eventDate);
@@ -1505,7 +1514,12 @@ trackerCapture.controller('DataEntryController',
 									if (enrollmentsjson.enrollments != undefined) {										
 										if (enrollmentsjson.enrollments[0].events.length > 0) {											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
-												var rowEventDate = new Date(event.eventDate);                                              
+												const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);                                                 
+                                                const tzOffset = rowEventDate.getTimezoneOffset() * 60 * 1000;
+                                                rowEventDate = new Date(rowEventDate- tzOffset);
+
+
                                                 //console.log("eventDate: " + event.eventDate);
 												if (event.programStage == 'mRDg7F9tAZH') {
 													//console.log( rowEventDate < currentEventDate);
@@ -1622,6 +1636,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 
@@ -1740,6 +1756,8 @@ trackerCapture.controller('DataEntryController',
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 
@@ -1855,6 +1873,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 
@@ -1976,6 +1996,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2100,6 +2122,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2224,6 +2248,8 @@ trackerCapture.controller('DataEntryController',
 
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2352,6 +2378,8 @@ trackerCapture.controller('DataEntryController',
 
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2474,6 +2502,8 @@ trackerCapture.controller('DataEntryController',
 										if (enrollmentsjson.enrollments[0].events.length > 0) {
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2596,6 +2626,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -2722,6 +2754,8 @@ trackerCapture.controller('DataEntryController',
 
 												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 													var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 													if (event.programStage == 'mRDg7F9tAZH') {
@@ -2842,6 +2876,8 @@ trackerCapture.controller('DataEntryController',
 											if (enrollmentsjson.enrollments[0].events.length > 0) {
 												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 													var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 													if (event.programStage == 'mRDg7F9tAZH') {
@@ -2966,6 +3002,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -3089,6 +3127,8 @@ trackerCapture.controller('DataEntryController',
 
 												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 													var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 													if (event.programStage == 'mRDg7F9tAZH') {
@@ -3213,6 +3253,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -3336,6 +3378,8 @@ trackerCapture.controller('DataEntryController',
 											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -3459,6 +3503,8 @@ trackerCapture.controller('DataEntryController',
 											if (enrollmentsjson.enrollments[0].events.length > 0) {
 												$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 													var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 													if (event.programStage == 'mRDg7F9tAZH') {
@@ -3579,6 +3625,8 @@ trackerCapture.controller('DataEntryController',
 										if (enrollmentsjson.enrollments[0].events.length > 0) {											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												//console.log("eventDate: " + event.eventDate);
@@ -3700,6 +3748,8 @@ trackerCapture.controller('DataEntryController',
 										if (enrollmentsjson.enrollments[0].events.length > 0) {											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
 												var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
 												//console.log("eventDate: " + event.eventDate);
@@ -4211,6 +4261,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                 var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4309,6 +4361,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4447,6 +4501,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4548,6 +4604,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4684,6 +4742,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4786,6 +4846,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -4926,6 +4988,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5028,6 +5092,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5166,6 +5232,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5266,6 +5334,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5403,6 +5473,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5504,6 +5576,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5644,6 +5718,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5746,6 +5822,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5886,6 +5964,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -5988,6 +6068,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6128,6 +6210,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6231,6 +6315,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6374,6 +6460,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6476,6 +6564,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6616,6 +6706,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                
@@ -6719,6 +6811,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -6859,6 +6953,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -6959,6 +7055,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7098,6 +7196,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7198,6 +7298,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7338,6 +7440,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7437,6 +7541,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7576,6 +7682,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7675,6 +7783,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7813,6 +7923,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -7913,6 +8025,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8046,6 +8160,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8145,6 +8261,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8281,6 +8399,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8376,6 +8496,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8507,6 +8629,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8603,6 +8727,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8737,6 +8863,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8832,6 +8960,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -8962,6 +9092,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -9060,6 +9192,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -9188,6 +9322,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
@@ -9283,6 +9419,8 @@ trackerCapture.controller('DataEntryController',
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                var rowEventDate = new Date(event.eventDate);
+const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
                                                 //if (eventToSave.event != event.event ){												
