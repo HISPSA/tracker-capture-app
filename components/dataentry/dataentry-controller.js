@@ -4261,12 +4261,11 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                 var rowEventDate = new Date(event.eventDate);
-const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
-rowEventDate = new Date(rowEventDate- tzOffsetrow);
+                                                const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+                                                rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                
                                                 
-                                               
-                                                
+                                                                                           
 
                                                 //if (eventToSave.event != event.event ){												
                                                 if (rowEventDate < currentEventDate) {
@@ -4280,8 +4279,6 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                         }
                                                     })														
                                                 }
-
-                                                //}
                                             }
                                         })
 
@@ -4304,10 +4301,63 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                     providedElsewhere: eventToSave.providedElsewhere[newvalueDE] ? true : false
                                                 }]
                                             };
-
                                             DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
-
                                             })
+
+                                            /*31/12/2025 - Calculation for backlog
+                                            **********************************************************/
+                                            if ($scope.currentEvent.BupjOLROGnk != undefined) {
+                                                var delta = cumulativeTotal - $scope.currentEvent.BupjOLROGnk;
+                                                if (enrollmentsjson.enrollments != undefined) {
+                                                    if (enrollmentsjson.enrollments[0].events.length > 0) {
+                                                        $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
+                                                            if (event.programStage == 'mRDg7F9tAZH') {
+                                                                var rowEventDate = new Date(event.eventDate);
+                                                                const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
+                                                                rowEventDate = new Date(rowEventDate - tzOffsetrow);
+                                                                if (rowEventDate > currentEventDate) {
+                                                                    $.each(event.dataValues, function (s, dataValue) {
+                                                                        var dataElement = dataValue.dataElement;
+                                                                        if (dataElement == prStDe.dataElement.id) {
+                                                                            if (dataValue.value != undefined) {
+                                                                                dataValue.value = dataValue.value + delta;
+                                                                                var newvalueDE = "BupjOLROGnk";
+                                                                                var ev = {
+                                                                                    event: event.event,
+                                                                                    orgUnit: event.orgUnit,
+                                                                                    program: event.program,
+                                                                                    programStage: event.programStage,
+                                                                                    status: event.status,
+                                                                                    geometry: event.geometry,
+                                                                                    assignedUser: event.assignedUser,
+                                                                                    trackedEntityInstance: event.trackedEntityInstance,
+                                                                                    dataValues: [{
+                                                                                        dataElement: newvalueDE,
+                                                                                        value: dataValue.value,
+                                                                                        providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
+                                                                                    }]
+                                                                                };
+                                                                                DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
+                                                                                })
+                                                                            }
+                                                                            return false;
+                                                                        }
+                                                                    })
+                                                                }
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                            /***********************************************************/
+
+
+
+                                           
+                                            $scope.currentEvent.BupjOLROGnk 
+
+
+
                                         }
                                     }
                                 }
