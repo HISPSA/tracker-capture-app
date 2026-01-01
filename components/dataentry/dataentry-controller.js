@@ -1514,11 +1514,9 @@ trackerCapture.controller('DataEntryController',
 									if (enrollmentsjson.enrollments != undefined) {										
 										if (enrollmentsjson.enrollments[0].events.length > 0) {											
 											$.each(enrollmentsjson.enrollments[0].events, function (i, event) {
-												const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
-rowEventDate = new Date(rowEventDate- tzOffsetrow);                                                 
+												var rowEventDate = new Date(event.eventDate);                                            
                                                 const tzOffset = rowEventDate.getTimezoneOffset() * 60 * 1000;
                                                 rowEventDate = new Date(rowEventDate- tzOffset);
-
 
                                                 //console.log("eventDate: " + event.eventDate);
 												if (event.programStage == 'mRDg7F9tAZH') {
@@ -4333,8 +4331,9 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                                     trackedEntityInstance: event.trackedEntityInstance,
                                                                                     dataValues: [{
                                                                                         dataElement: newvalueDE,
-                                                                                        value: dataValue.value,
-                                                                                        providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
+                                                                                        value: dataValue.value
+                                                                                        //,
+                                                                                        //providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
                                                                                     }]
                                                                                 };
                                                                                 DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
