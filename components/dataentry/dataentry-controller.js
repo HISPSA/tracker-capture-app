@@ -4281,7 +4281,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                         })
 
                                         if (cumulativeTotal > 0) {
-                                            $scope.currentEvent.BupjOLROGnk = cumulativeTotal;
+                                            // $scope.currentEvent.BupjOLROGnk = cumulativeTotal;
                                             //console.log($scope);
                                             var newvalueDE = "BupjOLROGnk";
                                             var ev = {
@@ -4316,10 +4316,11 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                 if (rowEventDate > currentEventDate) {
                                                                     $.each(event.dataValues, function (s, dataValue) {
                                                                         var dataElement = dataValue.dataElement;
-                                                                        if (dataElement == prStDe.dataElement.id) {
+                                                                       // if (dataElement == prStDe.dataElement.id) {
+                                                                        if (dataElement == "BupjOLROGnk") {
                                                                             if (dataValue.value != undefined) {
                                                                                 dataValue.value = dataValue.value + delta;
-                                                                                var newvalueDE = "BupjOLROGnk";
+                                                                                //var newvalueDE = "BupjOLROGnk";
                                                                                 var ev = {
                                                                                     event: event.event,
                                                                                     orgUnit: event.orgUnit,
@@ -4330,7 +4331,8 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                                     assignedUser: event.assignedUser,
                                                                                     trackedEntityInstance: event.trackedEntityInstance,
                                                                                     dataValues: [{
-                                                                                        dataElement: newvalueDE,
+                                                                                        //dataElement: newvalueDE,
+                                                                                        dataElement: dataElement,                                                                                        
                                                                                         value: dataValue.value
                                                                                         //,
                                                                                         //providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
@@ -4348,15 +4350,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                     }
                                                 }
                                             }
-                                            /***********************************************************/
-
-
-
-                                           
-                                            $scope.currentEvent.BupjOLROGnk 
-
-
-
+                                            /***********************************************************/                                  
                                         }
                                     }
                                 }
