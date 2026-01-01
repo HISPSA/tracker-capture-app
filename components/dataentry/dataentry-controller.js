@@ -4314,10 +4314,10 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                 if (rowEventDate > currentEventDate) {
                                                                     $.each(event.dataValues, function (s, dataValue) {
                                                                         var dataElement = dataValue.dataElement;
-                                                                       // if (dataElement == prStDe.dataElement.id) {
+                                                                        // if (dataElement == prStDe.dataElement.id) {
                                                                         if (dataElement == "BupjOLROGnk") {
                                                                             if (dataValue.value != undefined) {
-                                                                                dataValue.value = 1.0*(dataValue.value) + (delta)* 1.0;
+                                                                                dataValue.value = 1.0 * (dataValue.value) + (delta) * 1.0;
                                                                                 //var newvalueDE = "BupjOLROGnk";
                                                                                 var ev = {
                                                                                     event: event.event,
@@ -4330,13 +4330,26 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                                     trackedEntityInstance: event.trackedEntityInstance,
                                                                                     dataValues: [{
                                                                                         //dataElement: newvalueDE,
-                                                                                        dataElement: dataElement,                                                                                        
+                                                                                        dataElement: dataElement,
                                                                                         value: dataValue.value
                                                                                         //,
                                                                                         //providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
                                                                                     }]
                                                                                 };
-                                                                                $scope.ev.BupjOLROGnk = dataValue.value;
+
+
+
+                                                                                $.each($scope.allEventsSorted, function (el, row) {
+                                                                                    if (row.event == event.event) {
+                                                                                        $.each(row.dataValues, function (ss, dataValues) {
+                                                                                            if (dataValues.dataElement == "BupjOLROGnk") {
+                                                                                                dataValues.value = dataValue.value;
+                                                                                            }
+                                                                                        })
+                                                                                    }
+                                                                                })
+
+                                                                                //$scope.ev.BupjOLROGnk = dataValue.value;
                                                                                 DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
                                                                                 })
                                                                             }
