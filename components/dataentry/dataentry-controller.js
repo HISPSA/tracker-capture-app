@@ -4305,7 +4305,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                             /*31/12/2025 - Calculation for backlog
                                             **********************************************************/
                                             if ($scope.currentEvent.BupjOLROGnk != undefined) {
-                                                var delta = cumulativeTotal - $scope.currentEvent.BupjOLROGnk;
+                                                var delta = cumulativeTotal - ($scope.currentEvent.BupjOLROGnk)* 1.0;
                                                 if (enrollmentsjson.enrollments != undefined) {
                                                     if (enrollmentsjson.enrollments[0].events.length > 0) {
                                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
@@ -4319,7 +4319,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                        // if (dataElement == prStDe.dataElement.id) {
                                                                         if (dataElement == "BupjOLROGnk") {
                                                                             if (dataValue.value != undefined) {
-                                                                                dataValue.value = dataValue.value + delta;
+                                                                                dataValue.value = 1.0*(dataValue.value) + (delta)* 1.0;
                                                                                 //var newvalueDE = "BupjOLROGnk";
                                                                                 var ev = {
                                                                                     event: event.event,
