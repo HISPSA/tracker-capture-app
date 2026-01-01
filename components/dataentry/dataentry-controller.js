@@ -4260,11 +4260,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                             if (event.programStage == 'mRDg7F9tAZH') {
                                                 var rowEventDate = new Date(event.eventDate);
                                                 const tzOffsetrow = rowEventDate.getTimezoneOffset() * 60 * 1000;
-                                                rowEventDate = new Date(rowEventDate- tzOffsetrow);
-                                               
-                                                
-                                                                                           
-
+                                                rowEventDate = new Date(rowEventDate- tzOffsetrow);                                                                                         
                                                 //if (eventToSave.event != event.event ){												
                                                 if (rowEventDate < currentEventDate) {
                                                     $.each(event.dataValues, function (s, dataValue) {
@@ -4301,11 +4297,13 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                             };
                                             DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
                                             })
-
                                             /*31/12/2025 - Calculation for backlog
                                             **********************************************************/
+                                           var oldvalueDV = $scope.currentEvent.BupjOLROGnk; 
+                                           $scope.currentEvent.BupjOLROGnk = cumulativeTotal;
+
                                             if ($scope.currentEvent.BupjOLROGnk != undefined) {
-                                                var delta = cumulativeTotal - ($scope.currentEvent.BupjOLROGnk)* 1.0;
+                                                var delta = cumulativeTotal - oldvalueDV* 1.0;
                                                 if (enrollmentsjson.enrollments != undefined) {
                                                     if (enrollmentsjson.enrollments[0].events.length > 0) {
                                                         $.each(enrollmentsjson.enrollments[0].events, function (i, event) {
@@ -4338,6 +4336,7 @@ rowEventDate = new Date(rowEventDate- tzOffsetrow);
                                                                                         //providedElsewhere: event.providedElsewhere[newvalueDE] ? true : false
                                                                                     }]
                                                                                 };
+                                                                                $scope.ev.BupjOLROGnk = dataValue.value;
                                                                                 DHIS2EventFactory.updateForSingleValue(ev).then(function (response) {
                                                                                 })
                                                                             }
